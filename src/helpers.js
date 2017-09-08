@@ -80,5 +80,64 @@ module.exports = {
   */
   roundChannelsForSanity: function (color) {
     return this.roundChannels(color, 9)
+  },
+
+  /**
+   * Converts rgb/rgba/hex string to object
+   * @param {string} col
+   * @return {object} The { r,g,b,a }
+   */
+  convertFromString: function(col) {
+    var _hex2dec = function(v) {
+      return parseInt(v, 16)
+    }
+
+    var _splitHEX = function(hex) {
+      var c
+      if (hex.length === 4) {
+        c = (hex.replace('#','')).split('')
+        return {
+          r: _hex2dec((c[0] + c[0])),
+          g: _hex2dec((c[1] + c[1])),
+          b: _hex2dec((c[2] + c[2])),
+          a: 1
+        }
+      } else {
+        return {
+          r: _hex2dec(hex.slice(1,3)),
+          g: _hex2dec(hex.slice(3,5)),
+          b: _hex2dec(hex.slice(5)),
+          a: 1
+        }
+      }
+    }
+
+    var _splitRGB = function(rgb) {
+      var c = (rgb.slice(rgb.indexOf('(')+1, rgb.indexOf(')'))).split(',')
+      var flag = false, obj
+      c = c.map(function(n,i) {
+        return (i !== 3) ? parseInt(n, 10) : flag = true, parseFloat(n)
+      })
+      obj = {
+        r: c[0],
+        g: c[1],
+        b: c[2]
+      }
+      obj.a = c[3] ? c[3] : 1
+      return obj
+    }
+
+    var slc = col.slice(0,1)
+    if (slc === '#') {
+      return _splitHEX(col)
+    } else if (slc.toLowerCase() === 'r') {
+      return _splitRGB(col)
+    } else {
+      console.log('!Ooops! RGBvalues.color('+col+') : HEX, RGB, or RGBa strings only')
+    }
+
+    return {
+      color: color
+    }
   }
 }

@@ -34,6 +34,9 @@ var options = {
  * @return {object}                 The { r,g,b,a } result object, channel values are not rounded
  */
 function blend (backdrop, source, mode, blendCallback) {
+  backdrop = helpers.convertFromString(backdrop)
+  source = helpers.convertFromString(source)
+
   // Handle unit input if needed
   if (options.unitInput) {
     backdrop = helpers.convertFromUnit(backdrop)
@@ -72,7 +75,7 @@ function blend (backdrop, source, mode, blendCallback) {
     result = helpers.roundChannelsForSanity(result)
   }
 
-  return result
+  return 'rgba(' + result.r + ',' + result.g + ',' + result.b + ',' + result.a + ')'
 }
 
 // Separable blend function
@@ -83,8 +86,6 @@ var nonSeparableBlend = require('./non-separable')
 
 // All the blend mode functions as properties on one object
 module.exports = {
-  options: options,
-
   normal: function (backdrop, source) {
     return blend(backdrop, source, 'normal', separableBlend)
   },
@@ -96,12 +97,6 @@ module.exports = {
   },
   overlay: function (backdrop, source) {
     return blend(backdrop, source, 'overlay', separableBlend)
-  },
-  darken: function (backdrop, source) {
-    return blend(backdrop, source, 'darken', separableBlend)
-  },
-  lighten: function (backdrop, source) {
-    return blend(backdrop, source, 'lighten', separableBlend)
   },
   colorDodge: function (backdrop, source) {
     return blend(backdrop, source, 'colorDodge', separableBlend)
@@ -126,9 +121,6 @@ module.exports = {
   },
   saturation: function (backdrop, source) {
     return blend(backdrop, source, 'saturation', nonSeparableBlend)
-  },
-  color: function (backdrop, source) {
-    return blend(backdrop, source, 'color', nonSeparableBlend)
   },
   luminosity: function (backdrop, source) {
     return blend(backdrop, source, 'luminosity', nonSeparableBlend)
