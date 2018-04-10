@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 var postcss = require('postcss')
 var functions = require('postcss-functions')

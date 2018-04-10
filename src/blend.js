@@ -31,12 +31,15 @@ var options = {
  * @param {object} backdrop         The { r,g,b,a } color to be put below the source
  * @param {string} mode             The blend mode mode as a (camelCase) string
  * @param {function} blendCallback  The callback to use as blend function, basically differentiates separable and non-separable blend modes
- * @return {object}                 The { r,g,b,a } result object, channel values are not rounded
+ * @return {string}                 The { r,g,b,a } result object, channel values are not rounded
  */
 function blend (backdrop, source, mode, blendCallback) {
-  backdrop = helpers.convertFromString(backdrop)
-  source = helpers.convertFromString(source)
-
+  if (typeof backdrop !== 'object') {
+    backdrop = helpers.convertFromString(backdrop)
+  }
+  if (typeof source !== 'object') {
+    source = helpers.convertFromString(source)
+  }
   // Handle unit input if needed
   if (options.unitInput) {
     backdrop = helpers.convertFromUnit(backdrop)

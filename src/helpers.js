@@ -87,15 +87,15 @@ module.exports = {
    * @param {string} col
    * @return {object} The { r,g,b,a }
    */
-  convertFromString: function(col) {
-    var _hex2dec = function(v) {
+  convertFromString: function (col) {
+    var _hex2dec = function (v) {
       return parseInt(v, 16)
     }
 
-    var _splitHEX = function(hex) {
+    var _splitHEX = function (hex) {
       var c
       if (hex.length === 4) {
-        c = (hex.replace('#','')).split('')
+        c = (hex.replace('#', '')).split('')
         return {
           r: _hex2dec((c[0] + c[0])),
           g: _hex2dec((c[1] + c[1])),
@@ -104,19 +104,19 @@ module.exports = {
         }
       } else {
         return {
-          r: _hex2dec(hex.slice(1,3)),
-          g: _hex2dec(hex.slice(3,5)),
+          r: _hex2dec(hex.slice(1, 3)),
+          g: _hex2dec(hex.slice(3, 5)),
           b: _hex2dec(hex.slice(5)),
           a: 1
         }
       }
     }
 
-    var _splitRGB = function(rgb) {
-      var c = (rgb.slice(rgb.indexOf('(')+1, rgb.indexOf(')'))).split(',')
-      var flag = false, obj
-      c = c.map(function(n,i) {
-        return (i !== 3) ? parseInt(n, 10) : flag = true, parseFloat(n)
+    var _splitRGB = function (rgb) {
+      var c = (rgb.slice(rgb.indexOf('(') + 1, rgb.indexOf(')'))).split(',')
+      var obj
+      c = c.map(function (n, i) {
+        return (i !== 3) ? parseInt(n, 10) : parseFloat(n)
       })
       obj = {
         r: c[0],
@@ -127,17 +127,17 @@ module.exports = {
       return obj
     }
 
-    var slc = col.slice(0,1)
+    var slc = col.slice(0, 1)
     if (slc === '#') {
       return _splitHEX(col)
     } else if (slc.toLowerCase() === 'r') {
       return _splitRGB(col)
     } else {
-      console.log('!Ooops! RGBvalues.color('+col+') : HEX, RGB, or RGBa strings only')
+      console.log('!Ooops! RGBvalues.color(' + col + ') : HEX, RGB, or RGBa strings only')
     }
 
     return {
-      color: color
+      color: col
     }
   }
 }
